@@ -66,3 +66,5 @@ with open("../../../Reapeat_analysis/FIMO/fimo_out/fimo.gff", 'r', newline='') a
             pt_mean = 0
 
         writer.writerow(["{}-{}:{}".format(s1, s2, s0), len(lt), count, (int(count)/int(len(lt))*100), c, d, z,  pt_mean, pt, (mt)])
+
+        
