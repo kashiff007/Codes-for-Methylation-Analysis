@@ -42,11 +42,11 @@ This command generates 3 context files CpG/CG, CHG and CHH which has the informa
 - CHH_context_file_name.text
 
 The methylation extractor output looks like this (tab separated):
-(1) seq-ID
-(2) methylation state
-(3) chromosome
-(4) start position (= end position)
-(5) methylation call
+1. seq-ID
+2. methylation state
+3. chromosome
+4. start position (= end position)
+5. methylation call
 
 Methylated cytosines will receive a '+' orientation, unmethylated cytosines will receive a '-'
 orientation. 
