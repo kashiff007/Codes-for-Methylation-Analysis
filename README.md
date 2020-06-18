@@ -12,13 +12,76 @@ fastx_trimmer -i input.fastq -f 140 -o trimmed.fastq
 ```
 #### Mapping BS-seq reads on genome through Bismark
 
-Paired-end reads
+*Paired-end reads*
 ```{r, engine='bash', count_lines}
-~/Software/Bismark-0.22.3/bismark Genome_TAIR10/Original_Genome/ --multicore 4 --bowtie2 -p 10 -1 Methylation_reads/zr2939_16_R1.fq.gz -2 Methylation_reads/zr2939_16_R2.fq.gz --bam -o Col-0_SA187_Rep1
+~/Software/Bismark-0.22.3/bismark Genome_TAIR10/Original_Genome/ --multicore 4 --bowtie2 -p 10 -1 condition_BS-seq_reads/condition1_R1.fq.gz -2 condition_BS-seq_reads/condition1_R2.fq.gz --bam -o Col-0_SA187_Rep1
 ```
-Single-end reads
+*Single-end reads*
 ```{r, engine='bash', count_lines}
-~/Software/Bismark-0.22.3/bismark --multicore 2  -p 4 --bam -o Symb_bismark_Rep1 Genome_TAIR10/Original_Genome/ ../Maha_ChiP_RNA/S1_1.fq
+~/Software/Bismark-0.22.3/bismark --multicore 2  -p 4 --bam -o condition1_bismark_Rep1 Genome/Original_Genome/ ../condition_BS-seq_reads/condition1.fq
 ```
 
-Remove Duplication
+#### Remove Duplicate reads from BAM file
+
+Usually bismark map reads on basis of unique position, but still we have to remove the duplicates reads from PCR to avoid redundancy.
+```{r, engine='bash', count_lines}
+~/Software/Bismark-0.22.3/deduplicate_bismark --bam -p condition1_bismark_bt2_pe.bam
+```
+
+#### Calling DNA methylation from bismark methylation extractor
+
+Now final bam file has all the information of mapped reads, we can use bam file as an input to obtain the DNA methylation for every location of Cs in the genome. 
+```{r, engine='bash', count_lines}
+~/Software/Bismark-0.22.3/bismark_methylation_extractor -p -o methylation_extractor_output --multicore 4 --comprehensive --merge_non_CpG --bedGraph --counts --CX --cytosine_report --CX --genome_folder .FULLPATH/Genome/Original_Genome/ condition1_bismark_bt2_pe_deduplicate.bam
+```
+**Note: Use full path for --genome_folder otherwise it will not generate genome-wide cytosine files**
+
+This command generates 3 context files CpG/CG, CHG and CHH which has the information of each cytosine location for corresponding contexts. 
+- CpG_context_file_name.text
+- CHG_context_file_name.text
+- CHH_context_file_name.text
+
+The methylation extractor output looks like this (tab separated):
+(1) seq-ID
+(2) methylation state
+(3) chromosome
+(4) start position (= end position)
+(5) methylation call
+
+Methylated cytosines will receive a '+' orientation, unmethylated cytosines will receive a '-'
+orientation. 
+
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       ~~~   X   for methylated C in CHG context                      ~~~
+       ~~~   x   for not methylated C CHG                             ~~~
+       ~~~   H   for methylated C in CHH context                      ~~~
+       ~~~   h   for not methylated C in CHH context                  ~~~
+       ~~~   Z   for methylated C in CpG context                      ~~~
+       ~~~   z   for not methylated C in CpG context                  ~~~
+       ~~~   U   for methylated C in Unknown context (CN or CHN       ~~~
+       ~~~   u   for not methylated C in Unknown context (CN or CHN)  ~~~
+       ~~~   .   for any bases not involving cytosines                ~~~
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Examples for cytosines in CpG context:
+```
+HWUSI-EAS611_0006:3:1:1058:15806#0/1 - 6 91793279 z
+HWUSI-EAS611_0006:3:1:1058:17564#0/1 + 8 122855484 Z
+```
+Examples for cytosines in CHG context:
+```
+HWUSI-EAS611_0006:3:1:1054:1405#0/1 - 7 89920171 x
+HWUSI-EAS611_0006:3:1:1054:1405#0/1 + 7 89920172 X
+```
+Examples for cytosines in CHH context:
+```
+HWUSI-EAS611_0006:3:1:1054:1405#0/1 - 7 89920184 h 
+```
+
+
+
+
+
+
+
