@@ -5,7 +5,7 @@
 Reads obtained from bisulfite sequencing in fastq format.
 
 #### Filtering reads on the basis of quality
-Reads are filteres to desired quality. I have used [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html) for this purpose. There are many commands in FASTX for different purpose, I am showing here an example to trim last 10 bases of each reads which has bad quality at the 3' end ([Phred score less than 25] (https://en.wikipedia.org/wiki/Phred_quality_score#:~:text=A%20Phred%20quality%20score%20is,in%20the%20Human%20Genome%20Project). Each read has a size of 150 base.
+Reads are filteres to desired quality. I have used [FASTX Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html) for this purpose. There are many commands in FASTX for different purpose, I am showing here an example to trim last 10 bases of each reads which has bad quality at the 3' end ([Phred score less than 25] (https://en.wikipedia.org/wiki/Phred_quality_score#:~:text=A%20Phred%20quality%20score%20is,in%20the%20Human%20Genome%20Project)). Each read has a size of 150 base.
 
 ```{r, engine='bash', count_lines}
 fastx_trimmer -i input.fastq -f 140 -o trimmed.fastq
