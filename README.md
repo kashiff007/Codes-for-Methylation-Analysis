@@ -79,7 +79,38 @@ Examples for cytosines in CHH context:
 HWUSI-EAS611_0006:3:1:1054:1405#0/1 - 7 89920184 h 
 ```
 
+Other files generated are:
+* *.bismark.cov.gz
+* *.bedGraph.gz
+* *.CX_report.txt
 
+Bismark.cov.gz has the information of coverage percentage and methylated and non-methylated read numberes for all cytosine.
+```
+Chr2    1006    1006    1.72413793103448        1       57
+Chr2    1007    1007    2.04081632653061        1       48
+Chr2    1009    1009    2.85714285714286        2       68
+Chr2    1010    1010    3.33333333333333        2       58
+Chr2    1012    1012    1.23456790123457        1       80
+```
+Bedgraph file has the information only about the coverge.
+```
+Chr2    1005    1006    1.72413793103448
+Chr2    1006    1007    2.04081632653061
+Chr2    1008    1009    2.85714285714286
+Chr2    1009    1010    3.33333333333333
+Chr2    1011    1012    1.23456790123457
+```
+Most important output file from bismark_methylation_extractor command is **CX_report.txt**. Because thsi file has the information of context, strand orientation and number of methylated and un-methylated reads.
+```
+Chr2    1001    -       0       0       CHH     CNN
+Chr2    1006    +       1       57      CG      CGT
+Chr2    1007    -       1       48      CG      CGA
+Chr2    1009    +       2       68      CG      CGA
+Chr2    1010    -       2       58      CG      CGA
+Chr2    1012    +       1       80      CHH     CCA
+Chr2    1013    +       4       88      CHG     CAG
+Chr2    1015    -       2       83      CHG     CTG
+```
 
 
 
