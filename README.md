@@ -21,6 +21,8 @@ fastx_trimmer -i input.fastq -f 140 -o trimmed.fastq
 ~/Software/Bismark-0.22.3/bismark --multicore 2  -p 4 --bam -o condition1_bismark_Rep1 Genome/Original_Genome/ ../condition_BS-seq_reads/condition1.fq
 ```
 
+**Note: Do NOT sort the bam/sam file** 
+
 #### Remove Duplicate reads from BAM file
 
 Usually bismark map reads on basis of unique position, but still we have to remove the duplicates reads from PCR to avoid redundancy.
