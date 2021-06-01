@@ -34,7 +34,7 @@ Usually bismark map reads on basis of unique position, but still we have to remo
 
 Now final bam file has all the information of mapped reads, we can use bam file as an input to obtain the DNA methylation for every location of Cs in the genome. 
 ```{r, engine='bash', count_lines}
-~/Software/Bismark-0.22.3/bismark_methylation_extractor -p -o methylation_extractor_output --multicore 4 --comprehensive --merge_non_CpG --bedGraph --counts --CX --cytosine_report --CX --genome_folder .FULLPATH/Genome/Original_Genome/ condition1_bismark_bt2_pe_deduplicate.bam
+~/Software/Bismark-0.22.3/bismark_methylation_extractor -p -o methylation_extractor_output --multicore 4 --comprehensive --merge_non_CpG --bedGraph --counts --scaffolds --CX --cytosine_report --CX --genome_folder .FULLPATH/Genome/Original_Genome/ condition1_bismark_bt2_pe_deduplicate.bam
 ```
 **Note: Use full path for --genome_folder otherwise it will not generate genome-wide cytosine files**
 
