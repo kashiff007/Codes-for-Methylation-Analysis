@@ -114,7 +114,9 @@ Chr2    1013    +       4       88      CHG     CAG
 Chr2    1015    -       2       83      CHG     CTG
 ```
 
-
-
+Use this **CX_report.txt** file as an input for methylKit pipeline. But first convert the CX file in the format which methylKit accepts
+```
+awk '$6=="CG"{if($3=="+"&&($4>0&&$5>0 || $4>0&&$5==0))print$1"."$2"\t"$1"\t"$2"\tF\t"$4+$5"\t"$4/($4+$5)*100"\t"$5/($4+$5)*100; else if ($3=="-"&&($4>0&&$5>0 ||  $4>0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tR\t"$4+$5"\t"$4/($4+$5)*100"\t"$5/($4+$5)*100; else if ($3=="+"&&($4==0&&$5>0 || $4==0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tF\t"$4+$5"\t0\t0"; else if ($3=="-"&&($4==0&&$5>0 || $4==0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tR\t"$4+$5"\t0\t0"}' **.deduplicated.CX_report.txt > **.methylKit_input.txt 
+```
 
 
