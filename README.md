@@ -119,4 +119,12 @@ Use this **CX_report.txt** file as an input for methylKit pipeline. But first co
 awk '$6=="CG"{if($3=="+"&&($4>0&&$5>0 || $4>0&&$5==0))print$1"."$2"\t"$1"\t"$2"\tF\t"$4+$5"\t"$4/($4+$5)*100"\t"$5/($4+$5)*100; else if ($3=="-"&&($4>0&&$5>0 ||  $4>0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tR\t"$4+$5"\t"$4/($4+$5)*100"\t"$5/($4+$5)*100; else if ($3=="+"&&($4==0&&$5>0 || $4==0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tF\t"$4+$5"\t0\t0"; else if ($3=="-"&&($4==0&&$5>0 || $4==0&&$5==0)) print$1"."$2"\t"$1"\t"$2"\tR\t"$4+$5"\t0\t0"}' **.deduplicated.CX_report.txt > **.methylKit_input.txt 
 ```
 
-
+The file for methylKit will look like:
+```
+##         chrBase   chr    base strand coverage freqC  freqT
+## 1 chr21.9764539 chr21 9764539      R       12 25.00  75.00
+## 2 chr21.9764513 chr21 9764513      R       12  0.00 100.00
+## 3 chr21.9820622 chr21 9820622      F       13  0.00 100.00
+## 4 chr21.9837545 chr21 9837545      F       11  0.00 100.00
+## 5 chr21.9849022 chr21 9849022      F      124 72.58  27.42
+```
