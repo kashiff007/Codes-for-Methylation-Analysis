@@ -128,3 +128,29 @@ The file for methylKit will look like:
 ## 4 chr21.9837545 chr21 9837545      F       11  0.00 100.00
 ## 5 chr21.9849022 chr21 9849022      F      124 72.58  27.42
 ```
+
+Now we have files for methylation at per base level, we can use following code in R MethyKit.
+
+```
+library(methylKit)
+library(tidyverse)
+## Load methylKit files into list
+file.list = list("H2-25-1_CG_methylKit_input.txt", "H2-25-2_CG_methylKit_input.txt", "H2-25-3_CG_methylKit_input.txt", "H2-25-5_CG_methylKit_input.txt", "H2-25-6_CG_methylKit_input.txt", "H2-25-7_CG_methylKit_input.txt", "H2-32-1_CG_methylKit_input.txt", "H2-32-2_CG_methylKit_input.txt", "H2-32-3_CG_methylKit_input.txt", "H2-32-5_CG_methylKit_input.txt", "H2-32-6_CG_methylKit_input.txt", "H2-32-7_CG_methylKit_input.txt")
+
+## Read the files
+H2_myobj=methRead(file.list, sample.id=list("H2_25_1","H2_25_2","H2_25_3","H2_25_5","H2_25_6","H2_25_7","H2_32_1","H2_32_2","H2_32_3","H2_32_5","H2_32_6", "H2_32_7" ), assembly="H2", treatment=c(0,0,0,0,0,0,1,1,1,1,1,1),header=FALSE, context="CpG", dbtype = NA)
+
+## Filter each file based in read counts
+H2_filtered.myobj=filterByCoverage(H2_myobj,lo.count=5,lo.perc=NULL,hi.count=NULL)
+
+## Destand files: CG has two adjacent loacation, chnage it into one by adding read counts from C and G.
+H2_filtered_myobj_meth = methylKit::unite(H2_filtered.myobj, destrand=TRUE, min.per.group=1L)
+
+## change H2_filtered_myobj_meth into data frame
+H2_filtered_myobj_meth_df <- data.frame(H2_filtered_myobj_meth)
+
+## Replace all NA with 0
+H2_filtered_myobj_meth_df[is.na(H2_filtered_myobj_meth_df)] <- 0
+
+```
+
